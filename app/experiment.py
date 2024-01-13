@@ -1,5 +1,6 @@
-from flask import (Blueprint, redirect, render_template, request, session, url_for)
-from .io import write_data, write_metadata
+from flask import (Blueprint, redirect, render_template, request, session, url_for, jsonify)
+from .io import write_data, write_metadata, save_data
+import json 
 
 ## Initialize blueprint.
 bp = Blueprint('experiment', __name__)
@@ -15,10 +16,10 @@ def experiment():
         return redirect(url_for('error.error', errornum=1000))
 
     ## Case 1: previously completed experiment.
-    elif 'complete' in session:
+    # elif 'complete' in session:
 
         ## Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
+        # return redirect(url_for('complete.complete'))
 
     ## Case 2: repeat visit.
     elif not session['allow_restart'] and 'experiment' in session:
@@ -33,13 +34,28 @@ def experiment():
 
     ## Case 3: first visit.
     else:
-
         ## Update participant metadata.
         session['experiment'] = True
         write_metadata(session, ['experiment'], 'a')
 
         ## Present experiment.
-        return render_template('experiment.html', workerId=session['workerId'], assignmentId=session['assignmentId'], hitId=session['hitId'], code_success=session['code_success'], code_reject=session['code_reject'])
+        # return render_template('experiment.html', workerId=session['workerId'], assignmentId=session['assignmentId'], hitId=session['hitId'], code_success=session['code_success'], code_reject=session['code_reject'])
+        return render_template('upload.html')
+
+  
+# Routes to upload acknowledgement page if successful
+@bp.route('/success', methods = ['POST'])   
+def success():   
+    f = request.files['file'] 
+    # Saves data to disk
+    save_data(session, f, temp = False, method='pass')
+
+    ## Flag experiment as complete.
+    session['complete'] = 'success'
+    write_metadata(session, ['complete','code_success'], 'a')
+
+    return render_template("acknowledgement.html", name = f.filename)   
+
 
 @bp.route('/experiment', methods=['POST'])
 def pass_message():
@@ -52,6 +68,7 @@ def pass_message():
 
         ## Update participant metadata.
         session['MESSAGE'] = msg
+        fout = os.path.join(session['data'], '%s.json' %session['subId'])
         write_metadata(session, ['MESSAGE'], 'a')
 
     ## DEV NOTE:
@@ -66,10 +83,8 @@ def incomplete_save():
     """Save incomplete jsPsych dataset to disk."""
 
     if request.is_json:
-
         ## Retrieve jsPsych data.
         JSON = request.get_json()
-
         ## Save jsPsch data to disk.
         write_data(session, JSON, method='incomplete')
 
@@ -97,8 +112,8 @@ def redirect_success():
         write_data(session, JSON, method='pass')
 
     ## Flag experiment as complete.
-    session['complete'] = 'success'
-    write_metadata(session, ['complete','code_success'], 'a')
+    # session['complete'] = 'success'
+    # write_metadata(session, ['complete','code_success'], 'a')
 
     ## DEV NOTE:
     ## This function returns the HTTP response status code: 200
@@ -121,8 +136,8 @@ def redirect_reject():
         write_data(session, JSON, method='reject')
 
     ## Flag experiment as complete.
-    session['complete'] = 'reject'
-    write_metadata(session, ['complete','code_reject'], 'a')
+    # session['complete'] = 'reject'
+    # write_metadata(session, ['complete','code_reject'], 'a')
 
     ## DEV NOTE:
     ## This function returns the HTTP response status code: 200
@@ -145,8 +160,8 @@ def redirect_error():
         write_data(session, JSON, method='reject')
 
     ## Flag experiment as complete.
-    session['complete'] = 'error'
-    write_metadata(session, ['complete'], 'a')
+    # session['complete'] = 'error'
+    # write_metadata(session, ['complete'], 'a')
 
     ## DEV NOTE:
     ## This function returns the HTTP response status code: 200

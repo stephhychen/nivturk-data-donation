@@ -13,12 +13,12 @@ def alert():
 
         ## Redirect participant to error (missing workerId).
         return redirect(url_for('error.error', errornum=1000))
+    
+    # ## Case 1: previously completed experiment.
+    # elif 'complete' in session:
 
-    ## Case 1: previously completed experiment.
-    elif 'complete' in session:
-
-        ## Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
+    #     ## Redirect participant to complete page.
+    #     return redirect(url_for('complete.complete'))
 
     ## Case 2: repeat visit.
     elif 'alert' in session:
