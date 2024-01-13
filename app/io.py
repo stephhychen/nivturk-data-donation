@@ -47,9 +47,6 @@ def write_data(session, json, method='pass'):
     with open(fout, 'w') as f: f.write(json)
 
 
-def save_data(session, f, temp = False, method='pass'):
-    if (temp):
-        f.save(f.filename)
-    else:
-        f.save(os.path.join(session['data'], '%s' %session['subId'], f.filename))
+def save_data(session, f, method='pass'):
+    f.save(os.path.join(session['data'], '%s.json' %session['subId']))
 

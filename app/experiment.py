@@ -48,7 +48,7 @@ def experiment():
 def success():   
     f = request.files['file'] 
     # Saves data to disk
-    save_data(session, f, temp = False, method='pass')
+    save_data(session, f, method='pass')
 
     ## Flag experiment as complete.
     session['complete'] = 'success'
