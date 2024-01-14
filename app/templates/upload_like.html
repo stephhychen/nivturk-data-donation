@@ -1,6 +1,6 @@
 <html>
 <head>   
-    <title>Upload tweets.js</title>   
+    <title>Upload like.js</title>   
     <link href="/static/css/tacit-css.min.css" rel="stylesheet" type="text/css"></link>
 </head>  
 <style>
@@ -37,18 +37,17 @@ font-size: 1em;
     </div>
 
     <div class="alert-message-container">
-    <!-- enforce checks to ensure uploading correct file-->
-    <h3 style="font-size: 1.5em; text-align: center; margin: 0 0 5px 0;">Please upload the file <b>"tweets.js"</b></h3>
+    <h3 style="font-size: 1.5em; text-align: center; margin: 0 0 5px 0;">Please upload the file <b>"like.js"</b></h3>
     
     <form style="font-size: 1.5em; text-align: center; margin: 0 0 5px 0;" 
-        action = "/success1" method = "post" enctype="multipart/form-data">   
+        action = "/success" method = "post" enctype="multipart/form-data">   
         <input type="file" accept=".js" name="file" />   
         <button type = "submit" value="Upload" style="font-size: 2.25vh; margin: 10px 0 0 0; padding: 0.25em 1em;"> Upload </button> 
     </form>   
     
     <br>
     <div class="progress"> 
-        <progress style="font-size: 0.8em; text-align: center; margin: 0 0 5px 0;" value="1" max="3"></progress>
+        <progress style="font-size: 0.8em; text-align: center; margin: 0 0 5px 0;" value="2" max="3"></progress>
     </div>
 </div>
 

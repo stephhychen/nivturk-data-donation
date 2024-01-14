@@ -1,6 +1,6 @@
 import os, sys, re, configparser, warnings
 from flask import (Flask, redirect, render_template, request, session, url_for)
-from app import consent, alert, experiment, complete, error
+from app import alert, experiment, complete, error
 from .io import write_metadata
 from .utils import gen_code
 __version__ = '1.2.6'
@@ -40,7 +40,7 @@ app = Flask(__name__)
 app.secret_key = secret_key
 
 ## Apply blueprints to the application.
-app.register_blueprint(consent.bp)
+# app.register_blueprint(consent.bp)
 app.register_blueprint(alert.bp)
 app.register_blueprint(experiment.bp)
 app.register_blueprint(complete.bp)
@@ -63,7 +63,7 @@ def index():
 
     ## Record incoming metadata.
     info = dict(
-        workerId     = request.args.get('PROLIFIC_PID'),    # Prolific metadata
+        workerId     = '000',                               # Placeholder ID
         assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
         hitId        = request.args.get('STUDY_ID'),        # Prolific metadata
         subId        = gen_code(24),                        # NivTurk metadata
@@ -73,75 +73,17 @@ def index():
         code_reject  = cfg['PROLIFIC'].get('CODE_REJECT', gen_code(8).upper()),
     )
 
-    ## Case 1: workerId absent form URL.
-    if info['workerId'] is None:
+    # ## Case 1: workerId absent form URL.
+    # if info['workerId'] is None:
 
-        ## Redirect participant to error (missing workerId).
-        return redirect(url_for('error.error', errornum=1000))
+    #     ## Redirect participant to error (missing workerId).
+    #     return redirect(url_for('error.error', errornum=1000))
 
     ## Case 2: mobile / tablet / game console user.
-    elif any([device in info['user_agent'].lower() for device in ['mobile','android','iphone','ipad','kindle','nintendo','playstation','xbox']]):
+    if any([device in info['user_agent'].lower() for device in ['mobile','android','iphone','ipad','kindle','nintendo','playstation','xbox']]):
 
         ## Redirect participant to error (platform error).
         return redirect(url_for('error.error', errornum=1001))
-
-    ## Case 3: previous complete.
-    elif 'complete' in session:
-
-        ## Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
-
-    ## Case 4: repeat visit, manually changed workerId.
-    elif 'workerId' in session and session['workerId'] != info['workerId']:
-
-        ## Update metadata.
-        session['ERROR'] = '1005: workerId tampering detected.'
-        session['complete'] = 'error'
-        write_metadata(session, ['ERROR','complete'], 'a')
-
-        ## Redirect participant to error (unusual activity).
-        return redirect(url_for('error.error', errornum=1005))
-
-    ## Case 5: repeat visit, preexisting activity.
-    elif 'workerId' in session:
-
-        ## Redirect participant to consent form.
-        return redirect(url_for('consent.consent'))
-
-    ## Case 6: repeat visit, preexisting log but no session data.
-    elif not 'workerId' in session and info['workerId'] in os.listdir(meta_dir):
-
-        ## Parse log file.
-        with open(os.path.join(session['metadata'], info['workerId']), 'r') as f:
-            logs = f.read()
-
-        ## Extract subject ID.
-        info['subId'] = re.search('subId\t(.*)\n', logs).group(1)
-
-        ## Check for previous consent.
-        consent = re.search('consent\t(.*)\n', logs)
-        if consent and consent.group(1) == 'True': info['consent'] = True       # consent = true
-        elif consent and consent.group(1) == 'False': info['consent'] = False   # consent = false
-        elif consent: info['consent'] = consent.group(1)                        # consent = bot
-
-        ## Check for previous experiment.
-        experiment = re.search('experiment\t(.*)\n', logs)
-        if experiment: info['experiment'] = experiment.group(1)
-
-        ## Check for previous complete.
-        complete = re.search('complete\t(.*)\n', logs)
-        if complete: info['complete'] = complete.group(1)
-
-        ## Update metadata.
-        for k, v in info.items(): session[k] = v
-
-        ## Redirect participant as appropriate.
-        if 'complete' in session:
-            return redirect(url_for('complete.complete'))
-        elif 'experiment' in session:
-            return redirect(url_for('experiment.experiment'))
-        else:
-            return redirect(url_for('consent.consent'))
 
     ## Case 7: first visit, workerId present.
     else:
@@ -150,5 +92,5 @@ def index():
         for k, v in info.items(): session[k] = v
         write_metadata(session, ['workerId','hitId','assignmentId','subId','address','user_agent'], 'w')
 
-        ## Redirect participant to consent form.
-        return redirect(url_for('consent.consent'))
+        ## Redirect participant to landing page
+        return redirect(url_for('alert.alert'))

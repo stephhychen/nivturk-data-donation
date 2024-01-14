@@ -8,33 +8,12 @@ bp = Blueprint('alert', __name__)
 def alert():
     """Present alert to participant."""
 
-    ## Error-catching: screen for missing session.
-    if not 'workerId' in session:
+    # Update participant metadata.
+    session['alert'] = True
+    write_metadata(session, ['alert'], 'a')
 
-        ## Redirect participant to error (missing workerId).
-        return redirect(url_for('error.error', errornum=1000))
-    
-    # ## Case 1: previously completed experiment.
-    # elif 'complete' in session:
-
-    #     ## Redirect participant to complete page.
-    #     return redirect(url_for('complete.complete'))
-
-    ## Case 2: repeat visit.
-    elif 'alert' in session:
-
-        ## Redirect participant to experiment.
-        return redirect(url_for('experiment.experiment'))
-
-    ## Case 3: first visit.
-    else:
-
-        ## Update participant metadata.
-        session['alert'] = True
-        write_metadata(session, ['alert'], 'a')
-
-        ## Present alert page.
-        return render_template('alert.html')
+    ## Present alert page.
+    return render_template('alert.html')
 
 @bp.route('/alert', methods=['POST'])
 def alert_post():
@@ -42,3 +21,26 @@ def alert_post():
 
     ## Redirect participant to experiment.
     return redirect(url_for('experiment.experiment'))
+
+    # ## Error-catching: screen for missing session.
+    # if not 'workerId' in session:
+
+    #     ## Redirect participant to error (missing workerId).
+    #     return redirect(url_for('error.error', errornum=1000))
+    
+    # ## Case 1: previously completed experiment.
+    # elif 'complete' in session:
+
+    #     ## Redirect participant to complete page.
+    #     return redirect(url_for('complete.complete'))
+
+    # ## Case 2: repeat visit.
+    # elif 'alert' in session:
+
+    #     ## Redirect participant to experiment.
+    #     return redirect(url_for('experiment.experiment'))
+
+    # ## Case 3: first visit.
+    # else:
+
+    

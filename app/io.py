@@ -18,6 +18,7 @@ def write_metadata(session, keys, mode='w'):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     ## Write metadata to disk.
+    # fout = os.path.join(session['metadata'], session['workerId'])
     fout = os.path.join(session['metadata'], session['workerId'])
     with open(fout, mode) as f:
         for k in keys:
@@ -47,6 +48,16 @@ def write_data(session, json, method='pass'):
     with open(fout, 'w') as f: f.write(json)
 
 
-def save_data(session, f, method='pass'):
-    f.save(os.path.join(session['data'], '%s.json' %session['subId']))
+# incorporate user id into these names 
+def save_tweet_data(session, f, id):
+    try: 
+        f.save(os.path.join(session['data'], 'tweets', '%s-tweets.json' %id))
+    except Exception as e:
+        return f'Error saving file: {str(e)}', 500
+
+def save_like_data(session, f, id):
+    try: 
+        f.save(os.path.join(session['data'], 'like', '%s-like.json' %id))
+    except Exception as e:
+        return f'Error saving file: {str(e)}', 500
 
