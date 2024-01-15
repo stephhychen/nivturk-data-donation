@@ -15,6 +15,12 @@ cfg.read(os.path.join(ROOT_DIR, 'app.ini'))
 ## Ensure output directories exist.
 data_dir = os.path.join(ROOT_DIR, cfg['IO']['DATA'])
 if not os.path.isdir(data_dir): os.makedirs(data_dir)
+# /like and /tweets subdirectories 
+data_like_dir = os.path.join(data_dir, 'like')
+if not os.path.isdir(data_like_dir): os.makedirs(data_like_dir)
+data_tweets_dir = os.path.join(data_dir, 'tweets')
+if not os.path.isdir(data_tweets_dir): os.makedirs(data_tweets_dir)
+
 meta_dir = os.path.join(ROOT_DIR, cfg['IO']['METADATA'])
 if not os.path.isdir(meta_dir): os.makedirs(meta_dir)
 incomplete_dir = os.path.join(ROOT_DIR, cfg['IO']['INCOMPLETE'])
@@ -56,6 +62,8 @@ def index():
 
     ## Store directories in session object.
     session['data'] = data_dir
+    session['data_tweets'] = data_tweets_dir
+    session['data_like'] = data_like_dir
     session['metadata'] = meta_dir
     session['incomplete'] = incomplete_dir
     session['reject'] = reject_dir
