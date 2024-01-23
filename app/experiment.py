@@ -39,6 +39,7 @@ def success1():
     else:
         # Saves data to disk
         userid = session['id']
+        session['tweets_uploaded'] = True 
         save_tweet_data(session, f, userid)
 
         ## Flag experiment as complete.
@@ -48,6 +49,18 @@ def success1():
         # sends to 'like.js' page
         return render_template("upload_like.html")
         # return render_template("acknowledgement.html", name = f.filename) 
+
+@bp.route('/alert', methods=['GET'])
+def alert():
+    return render_template('alert.html')
+
+@bp.route('/like', methods = ['GET', 'POST'])
+def like():
+    return render_template('upload_like.html')
+
+@bp.route('/end', methods=['GET'])
+def end():
+    return render_template('end.html')
 
 # like data 
 @bp.route('/success', methods=['POST'])
@@ -59,6 +72,7 @@ def success():
     else:
         # Saves data to disk
         userid = session['id']
+        session['like_uploaded'] = True 
         save_like_data(session, f, userid)
 
         ## Flag experiment as complete.
@@ -88,3 +102,4 @@ def pass_message():
     ## For a full list of status codes, see:
     ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
     return ('', 200)
+

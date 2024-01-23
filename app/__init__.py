@@ -69,6 +69,9 @@ def index():
     session['reject'] = reject_dir
     session['allow_restart'] = allow_restart
 
+    session['tweets_uploaded'] = False
+    session['like_uploaded'] = False
+
     ## Record incoming metadata.
     info = dict(
         workerId     = '000',                               # Placeholder ID

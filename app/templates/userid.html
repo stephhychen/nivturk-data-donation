@@ -7,25 +7,46 @@
 <style>
     .alert-message-container {
   position: absolute;
+  display: block;
+  text-align: center;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   height: 50%;
   width: 60%;
-  font-size: 2.75vh;
+  font-size: 3vh;
   line-height: 1.5em;
 }
+
+.progress {
+    position: absolute;
+    left: calc(50% - 75px);
+    color: #ffb347;
+}
+progress::-webkit-progress-bar {
+         background-color: #d3d3d3;
+      }
+progress::-webkit-progress-value {
+         background-color: #ffb347;
+      }
 
 /* input:focus { outline: 2px orange solid } */
 
 </style>
         <div class="alert-message-container">
         <h3>Enter your participant ID:</h3>
+        <br> 
         <form action = "/userid" method = "post" enctype="multipart/form-data">   
-            <input type="text" name="id" required minlength="3" maxlength="3" size="20"/>   
-            <br>
+            <input type="text" name="id" required minlength="3" maxlength="10" size="20"/>
             <button type = "submit" value="Upload" style="font-size: 2.25vh; margin: 10px 0 0 0; padding: 0.25em 1em;"> Enter </button> 
-            </form>   
+            </form>  
+            <br> <br> <br> <br> <br> <br> 
+            <div class="progress"> 
+                <progress style="font-size: 0.8em; text-align: center; margin: 0 0 5px 0;" value="1" max="4"></progress>
+            </div> 
         </div>
+        
+        <br>
+    </div>
 </html>
