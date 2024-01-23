@@ -1,3 +1,6 @@
+
+## Extracts ZIP file contents 
+
 import zipfile 
 import json 
 

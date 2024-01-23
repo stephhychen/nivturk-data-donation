@@ -1,5 +1,5 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
-from .io import write_metadata
+# from .io import write_metadata
 
 ## Initialize blueprint.
 bp = Blueprint('alert', __name__)
@@ -10,7 +10,7 @@ def alert():
 
     # Update participant metadata.
     session['alert'] = True
-    write_metadata(session, ['alert'], 'a')
+    # write_metadata(session, ['alert'], 'a')
 
     ## Present alert page.
     return render_template('alert.html')

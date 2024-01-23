@@ -48,7 +48,7 @@ def write_data(session, json, method='pass'):
     with open(fout, 'w') as f: f.write(json)
 
 
-# incorporate user id into these names 
+# Writes uploaded data to disk 
 def save_tweet_data(session, f, id):
     try: 
         f.save(os.path.join(session['data_tweets'], '%s.json' %id))

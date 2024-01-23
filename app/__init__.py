@@ -1,7 +1,7 @@
 import os, sys, re, configparser, warnings
 from flask import (Flask, redirect, render_template, request, session, url_for)
 from app import alert, experiment, complete, error
-from .io import write_metadata
+# from .io import write_metadata
 from .utils import gen_code
 __version__ = '1.2.6'
 
@@ -15,18 +15,19 @@ cfg.read(os.path.join(ROOT_DIR, 'app.ini'))
 ## Ensure output directories exist.
 data_dir = os.path.join(ROOT_DIR, cfg['IO']['DATA'])
 if not os.path.isdir(data_dir): os.makedirs(data_dir)
-# /like and /tweets subdirectories 
+# Checks for or creates /like and /tweets subdirectories 
 data_like_dir = os.path.join(data_dir, 'like')
 if not os.path.isdir(data_like_dir): os.makedirs(data_like_dir)
 data_tweets_dir = os.path.join(data_dir, 'tweets')
 if not os.path.isdir(data_tweets_dir): os.makedirs(data_tweets_dir)
 
-meta_dir = os.path.join(ROOT_DIR, cfg['IO']['METADATA'])
-if not os.path.isdir(meta_dir): os.makedirs(meta_dir)
-incomplete_dir = os.path.join(ROOT_DIR, cfg['IO']['INCOMPLETE'])
-if not os.path.isdir(incomplete_dir): os.makedirs(incomplete_dir)
-reject_dir = os.path.join(ROOT_DIR, cfg['IO']['REJECT'])
-if not os.path.isdir(reject_dir): os.makedirs(reject_dir)
+### Creates meta data directories 
+# meta_dir = os.path.join(ROOT_DIR, cfg['IO']['METADATA'])
+# if not os.path.isdir(meta_dir): os.makedirs(meta_dir)
+# incomplete_dir = os.path.join(ROOT_DIR, cfg['IO']['INCOMPLETE'])
+# if not os.path.isdir(incomplete_dir): os.makedirs(incomplete_dir)
+# reject_dir = os.path.join(ROOT_DIR, cfg['IO']['REJECT'])
+# if not os.path.isdir(reject_dir): os.makedirs(reject_dir)
 
 ## Check Flask mode; if debug mode, clear session variable.
 debug = cfg['FLASK'].getboolean('DEBUG')
@@ -64,9 +65,9 @@ def index():
     session['data'] = data_dir
     session['data_tweets'] = data_tweets_dir
     session['data_like'] = data_like_dir
-    session['metadata'] = meta_dir
-    session['incomplete'] = incomplete_dir
-    session['reject'] = reject_dir
+    # session['metadata'] = meta_dir
+    # session['incomplete'] = incomplete_dir
+    # session['reject'] = reject_dir
     session['allow_restart'] = allow_restart
 
     session['tweets_uploaded'] = False
@@ -75,10 +76,10 @@ def index():
     ## Record incoming metadata.
     info = dict(
         workerId     = '000',                               # Placeholder ID
-        assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
-        hitId        = request.args.get('STUDY_ID'),        # Prolific metadata
-        subId        = gen_code(24),                        # NivTurk metadata
-        address      = request.remote_addr,                 # NivTurk metadata
+        # assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
+        # hitId        = request.args.get('STUDY_ID'),        # Prolific metadata
+        # subId        = gen_code(24),                        # NivTurk metadata
+        # address      = request.remote_addr,                 # NivTurk metadata
         user_agent   = request.user_agent.string,           # User metadata
         code_success = cfg['PROLIFIC'].get('CODE_SUCCESS', gen_code(8).upper()),
         code_reject  = cfg['PROLIFIC'].get('CODE_REJECT', gen_code(8).upper()),
@@ -100,8 +101,8 @@ def index():
     else:
 
         ## Update metadata.
-        for k, v in info.items(): session[k] = v
-        write_metadata(session, ['workerId','hitId','assignmentId','subId','address','user_agent'], 'w')
+        # for k, v in info.items(): session[k] = v
+        # write_metadata(session, ['workerId','hitId','assignmentId','subId','address','user_agent'], 'w')
 
         ## Redirect participant to landing page
         return redirect(url_for('alert.alert'))

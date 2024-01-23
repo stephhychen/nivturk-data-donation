@@ -1,5 +1,5 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
-from .io import write_metadata
+# from .io import write_metadata
 
 ## Initialize blueprint.
 bp = Blueprint('complete', __name__)
