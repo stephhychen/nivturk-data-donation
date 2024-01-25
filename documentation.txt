@@ -1,0 +1,39 @@
+=======
+NivTurk Data Donation Documentation 
+=======
+
+SETUP
+
+app/__init__.py -- defines directories, parses config file, sets up Flask. 
+-- editable to specify output directories, as well as what user information is saved
+in this specific session 
+
+app/app.ini -- specifies Flask secret key, and testing tools. 
+-- also specifies path to data folders 
+
+======= 
+
+DATA DONATION FLOW 
+
+app/alert.py -- controls open page --> directs to experiment pages 
+app/experiment.py -- controls experiment flow (web redirects)
+
+app/io.py -- functions to save data to disk 
+
+=======
+
+VISUAL TEMPLATES 
+
+app/templates -- HTML templates for information, user ID, upload & end pages 
+alert.html -- initial data donation instruction page 
+end.html 
+experiment.html
+upload_like.html -- portal to upload file 'like.js' 
+upload_tweets.html -- portal to upload file 'tweets.js' 
+userid.html -- portal to enter participant ID 
+
+
+=======
+
+
+
