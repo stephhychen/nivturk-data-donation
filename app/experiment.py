@@ -65,3 +65,16 @@ def success():
         # Returns  to finish page
         return render_template("end.html") 
 
+@bp.route('/debrief', methods=['POST'])
+def debrief():
+    """Process participant repsonse to debrief page."""
+
+    ## Redirect participant to experiment.
+    return render_template("debrief.html") 
+
+@bp.route('/debrief1', methods=['POST'])
+def debrief1():
+    """Process participant repsonse to debrief page."""
+
+    ## Redirect participant to experiment.
+    return render_template("debrief1.html") 

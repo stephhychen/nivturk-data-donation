@@ -1,0 +1,49 @@
+
+<html>
+<head>   
+    <title>Debrief</title>   
+    <link href="/static/css/tacit-css.min.css" rel="stylesheet" type="text/css"></link>
+</head>  
+
+<style>
+    .alert-message-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  height: 50%;
+  width: 60%;
+  font-size: 1em;
+  line-height: 1.5em;
+  text-align: center; 
+  margin: 0 0 5px 0;
+}
+</style>
+
+<body>
+    <div class="alert-message-container">
+
+    <p> The goal of our study was to understand the <b> relationship between mental health and social 
+        media activity, specifically looking at sensitivity and response to social reward (likes, replies, 
+        reposts) </b>.
+    <br> 
+    <p> Your donated data will be analyzed to assess and quantify whether there is a correlation 
+        between your ADHD symptoms and the way you interact with each platform, specifically 
+        following the receipt of social reward. For example, we will analyze whether you spend more 
+        time on the app after receiving likes, and whether people with higher ADHD symptom 
+        severity spend comparatively more or less time on the app following likes. We will also 
+        analyze whether symptom severity is correlated with posting frequency, time of posting, and 
+        types of posts, and whether this relationship varies with symptoms over time.
+    <br> 
+    <!-- Button -->
+    <form action = "/debrief1" method="post">
+    <center><button class="" type="submit" name="alert-check" value=1 style="font-size: 2.25vh; margin: 10px 0 0 0; padding: 0.25em 1em;">Proceed</button></center>
+    </form>
+</div>
+
+
+</body>
+
+
+</html>
