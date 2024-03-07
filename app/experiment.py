@@ -36,7 +36,9 @@ def success1():
 
     else:
         # Saves data to disk
-        save_tweet_data(session, f, session['id'])
+        status = save_tweet_data(session, f, session['id'])
+        if (status != "success"):
+            print(f"Failed to Save Tweet Data: {status}")
 
         ## Flag experiment as complete.
         session['complete'] = 'success'

@@ -52,12 +52,14 @@ def write_data(session, json, method='pass'):
 def save_tweet_data(session, f, id):
     try: 
         f.save(os.path.join(session['data_tweets'], '%s.json' %id))
+        return 'success'
     except Exception as e:
         return f'Error saving file: {str(e)}', 500
 
 def save_like_data(session, f, id):
     try: 
         f.save(os.path.join(session['data_like'], '%s.json' %id))
+        return 'success'
     except Exception as e:
         return f'Error saving file: {str(e)}', 500
 
